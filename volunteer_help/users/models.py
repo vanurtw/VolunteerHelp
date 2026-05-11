@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
 from django.contrib.auth.hashers import make_password
+from .fields import PhoneField
 
 
 class MyUserManager(BaseUserManager):
@@ -36,6 +37,10 @@ class MyUserManager(BaseUserManager):
 
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
+    CHOICES_STATUS = [
+        ('V', 'volunteer'),
+        ('N', 'needy')
+    ]
     email = models.EmailField("email address", unique=True, blank=True)
     is_staff = models.BooleanField(
         "staff status",
@@ -50,6 +55,37 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         "Unselect this instead of deleting accounts."
     ),
     date_joined = models.DateTimeField("date joined", default=timezone.now)
+
+    username = models.CharField(
+        max_length=255,
+        unique=True
+    )
+    description = models.TextField(
+        blank=True,
+        null=True
+    )
+    phone = PhoneField(
+        blank=True,
+        null=True
+    )
+    city = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+    latitude = models.FloatField(
+        null=True,
+        blank=True
+    )
+    longitude = models.FloatField(
+        null=True,
+        blank=True
+    )
+    status = models.CharField(
+        max_length=2,
+        choices=CHOICES_STATUS,
+        default='V'
+    )
 
     objects = MyUserManager()
 
