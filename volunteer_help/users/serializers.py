@@ -27,3 +27,18 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             'password',
             'password2',
         ]
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyUser
+        fields = [
+            'username',
+            'email',
+            'description',
+            'phone',
+            'city',
+            'latitude',
+            'longitude',
+        ]
+        read_only_fields = ['email']
