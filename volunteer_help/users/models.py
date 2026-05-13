@@ -38,8 +38,8 @@ class MyUserManager(BaseUserManager):
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
     CHOICES_STATUS = [
-        ('V', 'volunteer'),
-        ('N', 'needy')
+        ('volunteer', 'волонтер'),
+        ('needy', 'нуждающийся')
     ]
     email = models.EmailField("email address", unique=True, blank=True)
     is_staff = models.BooleanField(
@@ -82,9 +82,9 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         blank=True
     )
     status = models.CharField(
-        max_length=2,
+        max_length=10,
         choices=CHOICES_STATUS,
-        default='V'
+        default='volunteer'
     )
 
     objects = MyUserManager()
