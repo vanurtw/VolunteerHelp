@@ -2,10 +2,30 @@ from django.db import models
 from users.models import MyUser
 
 
+class TaskStatusManager(models.Manager):
+    def open(self):
+        return self.filter(status='open')
+
+    def in_progress(self):
+        return self.filter(status='in_progress')
+
+    def completed(self):
+        return self.filter(status='completed')
+
+    def canceled(self):
+        return self.filter(status='canceled')
+
+    def active(self):
+        return self.filter(status__in=['open', 'in_progress'])
+
+
 class Category(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField()
     date_creation = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         verbose_name = 'Категория'
@@ -44,6 +64,13 @@ class Task(models.Model):
     )
     date_creation = models.DateField(auto_now_add=True)
     date_due = models.DateTimeField()
+
+
+    objects = models.Manager()
+    status_objects = TaskStatusManager()
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         verbose_name = 'Задача'

@@ -1,6 +1,11 @@
 from rest_framework.urls import path
-from .views import TestAPIVIew
+from .views import (
+    TasksListAPIView,
+    CategoriesAPIView
+)
 
 urlpatterns = [
-    path('tasks/', TestAPIVIew.as_view())
+    path('categories/', CategoriesAPIView.as_view()),
+    path('tasks/', TasksListAPIView.as_view()),
+
 ]

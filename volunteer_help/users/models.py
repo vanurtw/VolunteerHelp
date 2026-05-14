@@ -60,6 +60,12 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         max_length=255,
         unique=True
     )
+    first_name = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
     description = models.TextField(
         blank=True,
         null=True
@@ -85,6 +91,9 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         max_length=10,
         choices=CHOICES_STATUS,
         default='volunteer'
+    )
+    rating = models.FloatField(
+        default=0.0
     )
 
     objects = MyUserManager()
