@@ -1,24 +1,24 @@
 import math
 from decimal import Decimal
-from .models import Task
 
 
 class Location:
 
-    def __init__(self, center_lat, center_lon, radius):
+    def __init__(self, center_lat, center_lon, radius, tasks):
         self.center_lat = center_lat
         self.center_lon = center_lon
         self.radius = radius
+        self.tasks = tasks
 
     def get_points(self):
-        '''Возвращает точки в пределах радиуса.
+        '''Возвращает задачи в пределах радиуса.
         Сначала считается ограничивающий прямоугольник.
-        Затем отбираются все точки в его пределах и впоследствии идет подробной расчет растояния и сравнения с радиусом
+        Затем отбираются все задачи в его пределах и впоследствии идет подробной расчет растояния и сравнения с радиусом
         '''
         min_lat, max_lat, min_lon, max_lon = self.get_bounding_box(self.center_lat, self.center_lon, self.radius)
-        points_bounding_box = Location.get_points_bounding_box(min_lat, max_lat, min_lon, max_lon)
-        points_in_radius = Location.points_in_radius(points_bounding_box, self.center_lat, self.center_lon, self.radius)
-        return points_in_radius
+        tasks_bounding_box = self.get_tasks_bounding_box(min_lat, max_lat, min_lon, max_lon)
+        tasks_in_radius = Location.tasks_in_radius(tasks_bounding_box, self.center_lat, self.center_lon, self.radius)
+        return tasks_in_radius
 
     @staticmethod
     def calculate_distance(lat1, lon1, lat2, lon2):
@@ -43,7 +43,7 @@ class Location:
         return distance * R
 
     @staticmethod
-    def is_point_in_radius(lat1, lon1, lat2, lon2, radius):
+    def is_task_in_radius(lat1, lon1, lat2, lon2, radius):
         '''Возвращает находится ли точка в радиусе и дистанцию'''
         distance = Location.calculate_distance(lat1, lon1, lat2, lon2)
         return distance <= radius, distance
@@ -65,22 +65,21 @@ class Location:
         return min_lat, max_lat, min_lon, max_lon
 
     @staticmethod
-    def points_in_radius(points, center_lat, center_lon, radius):
+    def tasks_in_radius(tasks, center_lat, center_lon, radius):
         '''Вовращает генератор являются ли точки в пределах радиуса'''
-        for point in points:
-            lat2, lon2 = point.latitude, point.longitude
-            flag, distance = Location.is_point_in_radius(center_lat, center_lon, lat2, lon2, radius)
-            point.distance = distance
+        for task in tasks:
+            lat2, lon2 = task.latitude, task.longitude
+            flag, distance = Location.is_task_in_radius(center_lat, center_lon, lat2, lon2, radius)
+            task.distance = distance
             if distance <= radius:
-                yield point
+                yield task
 
-    @staticmethod
-    def get_points_bounding_box(min_lat, max_lat, min_lon, max_lon):
+    def get_tasks_bounding_box(self, min_lat, max_lat, min_lon, max_lon):
         '''Филтрация точек по ограничивающему прямоугольнику'''
-        points = Task.objects.filter(
+        tasks = self.tasks.filter(
             latitude__gte=Decimal(str(min_lat)),
             latitude__lte=Decimal(str(max_lat)),
             longitude__gte=Decimal(str(min_lon)),
             longitude__lte=Decimal(str(max_lon))
         )
-        return points
+        return tasks

@@ -1,3 +1,4 @@
+from django.template.context_processors import request
 from rest_framework.response import Response
 from .models import Category, Task
 from .serializers import (
@@ -19,25 +20,27 @@ class CategoriesAPIView(GenericAPIView):
 
 
 class TasksListAPIView(GenericAPIView):
-    queryset = Task.status_objects.open()
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        request = self.request
+        radius = request.query_params.get("radius")
+        category = request.query_params.get("category")
+        tasks = Task.status_objects.open()
+        if category:
+            tasks = tasks.filter(category__slug=category)
+        if radius:
+            loc = Location(
+                center_lat=request.user.latitude,
+                center_lon=request.user.longitude,
+                radius=int(radius),
+                tasks=tasks
+            )
+            tasks = loc.get_points()
+        return tasks
+
     def get(self, request):
         tasks = self.get_queryset()
-        radius = request.query_params.get("radius")
-        if radius:
-            loc = Location(center_lat=request.user.latitude, center_lon=request.user.longitude, radius=int(radius))
-            tasks = loc.get_points()
         serializer = self.serializer_class(list(tasks), many=True)
         return Response(serializer.data)
-
-    # def get(self, request):
-    #     '''Возвращает точки по критериям отбора'''
-    #     serializer = SearchSerializer(data=request.query_params)
-    #     serializer.is_valid(raise_exception=True)
-    #     center_lat, center_lon, radius = serializer.validated_data.values()
-    #     loc = Location(center_lat, center_lon, radius)
-    #     points = loc.get_points()
-    #     data = [self.get_serializer(obj[1]).data for obj in points]
-    #     return Response(data)
