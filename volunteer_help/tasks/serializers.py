@@ -27,9 +27,8 @@ class TaskSerializer(serializers.ModelSerializer):
     distance = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
     user = UserTaskSerializer()
+    distance = serializers.CharField(default=0)
 
-    def get_distance(self, task):
-        return 'расстояние до задачи от меня'
 
     def get_category(self, task):
         return task.category.title
@@ -49,5 +48,6 @@ class TaskSerializer(serializers.ModelSerializer):
             'distance',
             'category',
             'user',
+            'distance'
 
         ]

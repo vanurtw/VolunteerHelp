@@ -18,8 +18,7 @@ class Location:
         min_lat, max_lat, min_lon, max_lon = self.get_bounding_box(self.center_lat, self.center_lon, self.radius)
         points_bounding_box = Location.get_points_bounding_box(min_lat, max_lat, min_lon, max_lon)
         points_in_radius = Location.points_in_radius(points_bounding_box, self.center_lat, self.center_lon, self.radius)
-        points = filter(lambda x: x[0][0], zip(points_in_radius, points_bounding_box))
-        return points
+        return points_in_radius
 
     @staticmethod
     def calculate_distance(lat1, lon1, lat2, lon2):
@@ -69,9 +68,11 @@ class Location:
     def points_in_radius(points, center_lat, center_lon, radius):
         '''Вовращает генератор являются ли точки в пределах радиуса'''
         for point in points:
-            lat2, lon2 = point.coordinates
+            lat2, lon2 = point.latitude, point.longitude
             flag, distance = Location.is_point_in_radius(center_lat, center_lon, lat2, lon2, radius)
-            yield flag, distance
+            point.distance = distance
+            if distance <= radius:
+                yield point
 
     @staticmethod
     def get_points_bounding_box(min_lat, max_lat, min_lon, max_lon):
@@ -81,5 +82,5 @@ class Location:
             latitude__lte=Decimal(str(max_lat)),
             longitude__gte=Decimal(str(min_lon)),
             longitude__lte=Decimal(str(max_lon))
-        ).select_related('user')
+        )
         return points

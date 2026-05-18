@@ -26,7 +26,10 @@ class TasksListAPIView(GenericAPIView):
     def get(self, request):
         tasks = self.get_queryset()
         radius = request.query_params.get("radius")
-        serializer = self.serializer_class(tasks, many=True)
+        if radius:
+            loc = Location(center_lat=request.user.latitude, center_lon=request.user.longitude, radius=int(radius))
+            tasks = loc.get_points()
+        serializer = self.serializer_class(list(tasks), many=True)
         return Response(serializer.data)
 
     # def get(self, request):
