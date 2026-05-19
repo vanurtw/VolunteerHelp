@@ -25,13 +25,16 @@ class UserTaskSerializer(serializers.ModelSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     distance = serializers.SerializerMethodField()
-    category = serializers.SerializerMethodField()
-    user = UserTaskSerializer()
-    distance = serializers.CharField(default=0)
-
-
-    def get_category(self, task):
-        return task.category.title
+    category = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+        write_only=True
+    )
+    category_name = serializers.CharField(
+        source='category.title',
+        read_only=True
+    )
+    user = UserTaskSerializer(read_only=True)
+    distance = serializers.FloatField(default=0, read_only=True)
 
     class Meta:
         model = Task
@@ -47,7 +50,10 @@ class TaskSerializer(serializers.ModelSerializer):
             'date_due',
             'distance',
             'category',
+            'category_name',
             'user',
-            'distance'
-
+        ]
+        read_only_fields = [
+            'distance',
+            'user'
         ]

@@ -31,16 +31,36 @@ class TasksListAPIView(GenericAPIView):
         if category:
             tasks = tasks.filter(category__slug=category)
         if radius:
-            loc = Location(
-                center_lat=request.user.latitude,
-                center_lon=request.user.longitude,
-                radius=int(radius),
-                tasks=tasks
-            )
-            tasks = loc.get_points()
+            tasks = self._filter_by_distance(request.user, tasks, radius)
         return tasks
+
+    def _filter_by_distance(self, user, tasks, radius):
+        try:
+            radius_km = int(radius)
+            if radius_km <= 0:
+                return tasks.none()
+        except ValueError:
+            return tasks.none()
+
+        if not user.latitude or not user.longitude:
+            return tasks.none()
+
+        loc = Location(
+            center_lat=user.latitude,
+            center_lon=user.longitude,
+            radius=radius_km,
+            tasks=tasks
+        )
+        return loc.get_points()
 
     def get(self, request):
         tasks = self.get_queryset()
-        serializer = self.serializer_class(list(tasks), many=True)
+        print(tasks)
+        serializer = self.serializer_class(tasks, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=request.user)
         return Response(serializer.data)

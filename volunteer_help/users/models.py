@@ -58,7 +58,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     username = models.CharField(
         max_length=255,
-        unique=True
+        unique=True,
+
     )
     first_name = models.CharField(
         max_length=100,

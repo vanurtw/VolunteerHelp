@@ -49,13 +49,13 @@ class Task(models.Model):
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category_tasks')
     address = models.CharField(max_length=255)
-    latitude = models.FloatField(
-        null=True,
-        blank=True
+    latitude = models.DecimalField(
+        max_digits=9,
+        decimal_places=6,
     )
-    longitude = models.FloatField(
-        null=True,
-        blank=True
+    longitude = models.DecimalField(
+        max_digits=9,
+        decimal_places=6,
     )
     status = models.CharField(
         max_length=20,
@@ -64,7 +64,6 @@ class Task(models.Model):
     )
     date_creation = models.DateField(auto_now_add=True)
     date_due = models.DateTimeField()
-
 
     objects = models.Manager()
     status_objects = TaskStatusManager()
