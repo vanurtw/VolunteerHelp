@@ -8,6 +8,16 @@ from .serializers import (
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from .services import Location
+from django.shortcuts import get_object_or_404
+from rest_framework import permissions
+
+
+class IsOwner(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        print(request.method)
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return request.user == obj.user
 
 
 class CategoriesAPIView(GenericAPIView):
@@ -55,7 +65,6 @@ class TasksListAPIView(GenericAPIView):
 
     def get(self, request):
         tasks = self.get_queryset()
-        print(tasks)
         serializer = self.serializer_class(tasks, many=True)
         return Response(serializer.data)
 
@@ -63,4 +72,22 @@ class TasksListAPIView(GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(user=request.user)
+        return Response(serializer.data)
+
+
+class TasksDetailAPIView(GenericAPIView):
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
+    queryset = Task.objects.all()
+
+    def get(self, request, pk):
+        obj = get_object_or_404(Task, id=pk)
+        serializer = self.serializer_class(obj)
+        return Response(serializer.data)
+
+    def patch(self, request, pk):
+        instance = self.get_object()
+        serializer = self.serializer_class(instance=instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(serializer.data)
