@@ -74,3 +74,24 @@ class Task(models.Model):
     class Meta:
         verbose_name = 'Задача'
         verbose_name_plural = 'Задачи'
+
+
+class ResponseTask(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Ожидает'),
+        ('accepted', 'Принят'),
+        ('rejected', 'Отклонён'),
+    )
+
+    status = models.CharField(
+        choices=STATUS_CHOICES,
+        max_length=20,
+        default='pending'
+    )
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='responses')
+    volunteer = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('task', 'volunteer')
+        verbose_name = 'Отклик'
+        verbose_name_plural = 'Отклики'

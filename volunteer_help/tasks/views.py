@@ -100,4 +100,12 @@ class TasksDetailAPIView(GenericAPIView):
         return Response({"status": "ok"}, status=status.HTTP_204_NO_CONTENT)
 
 
+class TasksMyAPIView(GenericAPIView):
+    serializer_class = TaskSerializer
+    queryset = Task.objects.all()
+    permission_classes = [IsAuthenticated]
 
+    def get(self, request):
+        tasks = request.user.user_tasks.all()
+        serializer = self.serializer_class(tasks, many=True)
+        return Response(serializer.data)
