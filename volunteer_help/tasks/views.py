@@ -10,6 +10,8 @@ from rest_framework.permissions import IsAuthenticated
 from .services import Location
 from django.shortcuts import get_object_or_404
 from rest_framework import permissions
+from rest_framework.mixins import DestroyModelMixin
+from rest_framework import status
 
 
 class IsOwner(permissions.BasePermission):
@@ -91,3 +93,11 @@ class TasksDetailAPIView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
+    def delete(self, request, pk):
+        instance = self.get_object()
+        instance.delet()
+        return Response({"status": "ok"}, status=status.HTTP_204_NO_CONTENT)
+
+
+
