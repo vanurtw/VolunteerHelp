@@ -90,6 +90,7 @@ class ResponseTask(models.Model):
     )
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='responses')
     volunteer = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    date_creation = models.DateField(auto_now_add=True)
 
     class Meta:
         unique_together = ('task', 'volunteer')

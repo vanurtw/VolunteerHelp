@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Task
+from .models import Category, Task, ResponseTask
 
 
 @admin.register(Category)
@@ -9,4 +9,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(ResponseTask)
+class ResponseTask(admin.ModelAdmin):
     pass

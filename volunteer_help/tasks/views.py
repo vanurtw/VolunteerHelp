@@ -1,9 +1,10 @@
 from django.template.context_processors import request
 from rest_framework.response import Response
-from .models import Category, Task
+from .models import Category, Task, ResponseTask
 from .serializers import (
     TaskSerializer,
-    CategorySerializer
+    CategorySerializer,
+    ResponseTaskSerializer
 )
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -12,6 +13,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import permissions
 from rest_framework.mixins import DestroyModelMixin
 from rest_framework import status
+from rest_framework.views import APIView
 
 
 class IsOwner(permissions.BasePermission):
@@ -109,3 +111,49 @@ class TasksMyAPIView(GenericAPIView):
         tasks = request.user.user_tasks.all()
         serializer = self.serializer_class(tasks, many=True)
         return Response(serializer.data)
+
+
+class TaskRespondAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        task = get_object_or_404(Task, id=pk)
+        user = request.user
+
+        if task.user == user:
+            return Response(
+                {'error': 'Нельзя откликнуться на свою заявку'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        if user.status != 'volunteer':
+            return Response(
+                {'error': 'Только волонтёры могут откликаться'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        if task.status != 'open':
+            return Response(
+                {'error': f'Нельзя откликнуться на заявку со статусом "{task.status}"'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        if ResponseTask.objects.filter(task=task, volunteer=user).exists():
+            return Response(
+                {'error': 'Вы уже откликнулись на эту заявку'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        response = ResponseTask.objects.create(
+            task=task,
+            volunteer=user,
+            status='pending'
+        )
+        # отправка уведомлений
+        # send_response_notification.delay(task.needy.email, task.title, user.username)
+
+        return Response(
+            {
+                'success': True,
+                'message': 'Отклик отправлен',
+                'response_id': response.id,
+                'task_id': task.id
+            },
+            status=status.HTTP_201_CREATED
+        )
