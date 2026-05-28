@@ -89,7 +89,7 @@ class ResponseTask(models.Model):
         default='pending'
     )
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='responses')
-    volunteer = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    volunteer = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='users_response_tasks')
     date_creation = models.DateField(auto_now_add=True)
 
     class Meta:

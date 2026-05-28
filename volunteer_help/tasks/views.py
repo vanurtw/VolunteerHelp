@@ -4,6 +4,7 @@ from .models import Category, Task, ResponseTask
 from .serializers import (
     TaskSerializer,
     CategorySerializer,
+    ResponseTaskMySerializer,
     ResponseTaskSerializer
 )
 from rest_framework.generics import GenericAPIView
@@ -14,6 +15,10 @@ from rest_framework import permissions
 from rest_framework.mixins import DestroyModelMixin
 from rest_framework import status
 from rest_framework.views import APIView
+from .api_docs import (
+    categories_docs,
+    get_tasks_docs
+)
 
 
 class IsOwner(permissions.BasePermission):
@@ -27,7 +32,9 @@ class IsOwner(permissions.BasePermission):
 class CategoriesAPIView(GenericAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    permission_classes = [IsAuthenticated]
 
+    @categories_docs()
     def get(self, request):
         serializer = self.serializer_class(self.get_queryset(), many=True)
         return Response(serializer.data)
@@ -50,7 +57,7 @@ class TasksListAPIView(GenericAPIView):
 
     def _filter_by_distance(self, user, tasks, radius):
         try:
-            radius_km = int(radius)
+            radius_km = float(radius)
             if radius_km <= 0:
                 return tasks.none()
         except ValueError:
@@ -67,12 +74,23 @@ class TasksListAPIView(GenericAPIView):
         )
         return loc.get_points()
 
+    @get_tasks_docs()
     def get(self, request):
+        if request.user.status != 'volunteer':
+            return Response(
+                {'error': 'Только волонтёры могут искать задачи'},
+                status=status.HTTP_403_FORBIDDEN
+            )
         tasks = self.get_queryset()
         serializer = self.serializer_class(tasks, many=True)
         return Response(serializer.data)
 
     def post(self, request):
+        if request.user.status != 'needy':
+            return Response(
+                {'error': 'Только нуждающийся могут создать задачу'},
+                status=status.HTTP_403_FORBIDDEN
+            )
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(user=request.user)
@@ -117,6 +135,7 @@ class TaskRespondAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
+        '''Откликнуться на заявку (создать Response)'''
         task = get_object_or_404(Task, id=pk)
         user = request.user
 
@@ -157,3 +176,58 @@ class TaskRespondAPIView(APIView):
             },
             status=status.HTTP_201_CREATED
         )
+
+    def delete(self, request, pk):
+
+        '''Отменить свой отклик (только если статус pending)'''
+
+        if request.user.status != 'volunteer':
+            return Response(
+                {'error': 'Доступно только для волонтеров'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        task = ResponseTask.objects.filter(
+            status='pending',
+            task__id=pk,
+            volunteer=request.user
+        ).first()
+        if not task:
+            return Response({'error': 'Отклик не найден'}, status=404)
+        task.delete()
+        return Response({'status': 'pk'}, status=status.HTTP_204_NO_CONTENT)
+
+
+class TaskMyResponseAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ResponseTaskMySerializer
+
+    def get_queryset(self):
+        return self.request.user.users_response_tasks.all()
+
+    def get(self, request):
+        '''Все мои отклики (с их статусами)'''
+        if request.user.status != 'volunteer':
+            return Response(
+                {'error': 'Доступно только для волонтеров'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        data = self.get_queryset()
+        serializer = self.serializer_class(data, many=True)
+        return Response(serializer.data)
+
+
+class TaskResponseAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ResponseTaskSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        return ResponseTask.objects.filter(task__id=pk, task__user=self.request.user)
+
+    def get(self, request, pk):
+        qs = self.get_queryset()
+        serializer = self.serializer_class(qs, many=True)
+        return Response(serializer.data)
+
+
