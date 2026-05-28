@@ -49,6 +49,7 @@ class Task(models.Model):
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category_tasks')
     address = models.CharField(max_length=255)
+    volunteer = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='user_my_tasks', blank=True, null=True)
     latitude = models.DecimalField(
         max_digits=9,
         decimal_places=6,

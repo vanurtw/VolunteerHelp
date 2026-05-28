@@ -6,7 +6,8 @@ from .views import (
     TasksMyAPIView,
     TaskRespondAPIView,
     TaskMyResponseAPIView,
-    TaskResponseAPIView
+    TaskResponseAPIView,
+    TaskAcceptAPIView
 )
 
 urlpatterns = [
@@ -17,5 +18,6 @@ urlpatterns = [
     path('tasks/<int:pk>/respond/', TaskRespondAPIView.as_view()),
     path('tasks/responses/my/', TaskMyResponseAPIView.as_view()),
     path('tasks/<int:pk>/responses/', TaskResponseAPIView.as_view()),
+    path('tasks/responses/<int:pk>/accept/', TaskAcceptAPIView.as_view()),
 
 ]

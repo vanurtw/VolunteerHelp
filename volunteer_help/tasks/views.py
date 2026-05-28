@@ -195,7 +195,7 @@ class TaskRespondAPIView(APIView):
         if not task:
             return Response({'error': 'Отклик не найден'}, status=404)
         task.delete()
-        return Response({'status': 'pk'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'status': 'ok'}, status=status.HTTP_204_NO_CONTENT)
 
 
 class TaskMyResponseAPIView(GenericAPIView):
@@ -231,3 +231,25 @@ class TaskResponseAPIView(GenericAPIView):
         return Response(serializer.data)
 
 
+class TaskAcceptAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        '''Принятие отклика на задачу'''
+
+        response_task = get_object_or_404(ResponseTask, id=pk)
+        if response_task.status != 'pending':
+            return Response({'error': 'Отклик уже обработан'}, status=400)
+
+        task = response_task.task
+
+        if task.user != request.user:
+            return Response({'error': 'Не ваша заявка'}, status=403)
+
+        ResponseTask.objects.filter(task=task).exclude(id=response_task.id).update(status='rejected')
+        response_task.status = 'accepted'
+        response_task.save()
+        task.status = 'in_progress'
+        task.volunteer = response_task.volunteer
+        task.save()
+        return Response({'success': True, 'task_id': task.id}, status=200)
