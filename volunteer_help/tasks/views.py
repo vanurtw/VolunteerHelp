@@ -246,10 +246,35 @@ class TaskAcceptAPIView(APIView):
         if task.user != request.user:
             return Response({'error': 'Не ваша заявка'}, status=403)
 
+        if task.status != 'open':
+            return Response({'error': 'У задачи статус отличается от <open>'}, status=status.HTTP_400_BAD_REQUEST)
+
         ResponseTask.objects.filter(task=task).exclude(id=response_task.id).update(status='rejected')
         response_task.status = 'accepted'
         response_task.save()
         task.status = 'in_progress'
         task.volunteer = response_task.volunteer
+        task.save()
+        return Response({'success': True, 'task_id': task.id}, status=200)
+
+
+class TaskRejectAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        '''отмена отклика выбранного волонтера'''
+        response_task = get_object_or_404(ResponseTask, id=pk)
+
+        if response_task.status != 'accepted':
+            return Response({'error': 'Можно отменить только принятый отклик'}, status=400)
+
+        task = response_task.task
+
+        if task.user != request.user:
+            return Response({'error': 'Не ваша заявка'}, status=403)
+
+        ResponseTask.objects.filter(task=task).update(status='pending')
+        task.status = 'open'
+        task.volunteer = None
         task.save()
         return Response({'success': True, 'task_id': task.id}, status=200)
