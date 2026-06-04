@@ -37,12 +37,14 @@ class Task(models.Model):
     STATUS_IN_PROGRESS = 'in_progress'
     STATUS_COMPLETED = 'completed'
     STATUS_CANCELED = 'canceled'
+    PENDING_CONF = 'pending_confirmation'
 
     CHOICES_STATUS = [
         (STATUS_OPEN, 'открыта'),
         (STATUS_IN_PROGRESS, 'в работе'),
         (STATUS_COMPLETED, 'выполнена'),
         (STATUS_CANCELED, 'отменена'),
+        (PENDING_CONF, 'Ожидает подтверждения')
     ]
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='user_tasks')
     title = models.CharField(max_length=255)

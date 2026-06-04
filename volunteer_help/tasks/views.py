@@ -278,3 +278,18 @@ class TaskRejectAPIView(APIView):
         task.volunteer = None
         task.save()
         return Response({'success': True, 'task_id': task.id}, status=200)
+
+
+class TaskCompletedAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Task.objects.all()
+
+    def get_object(self):
+        return get_object_or_404(Task, id=self.kwargs.get('pk'))
+
+    def post(self, request, pk):
+        '''Отметить задачу волонтером как выполненную'''
+        tasks = self.get_object()
+        tasks.status = 'pending_confirmation'
+        tasks.save()
+        return Response({"success": True}, status=status.HTTP_200_OK)
