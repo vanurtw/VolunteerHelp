@@ -110,6 +110,8 @@ class TasksDetailAPIView(GenericAPIView):
 
     def patch(self, request, pk):
         instance = self.get_object()
+        if instance.status != 'open':
+            return Response({'error':'задача не имеет статус open'}, status=status.HTTP_400_BAD_REQUEST)
         serializer = self.serializer_class(instance=instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -117,6 +119,8 @@ class TasksDetailAPIView(GenericAPIView):
 
     def delete(self, request, pk):
         instance = self.get_object()
+        if instance.status != 'open':
+            return Response({'error':'задача не имеет статус open'}, status=status.HTTP_400_BAD_REQUEST)
         instance.delet()
         return Response({"status": "ok"}, status=status.HTTP_204_NO_CONTENT)
 
