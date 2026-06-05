@@ -36,6 +36,7 @@ class CategoriesAPIView(GenericAPIView):
 
     @categories_docs()
     def get(self, request):
+        '''Поолучение категорий для задач'''
         serializer = self.serializer_class(self.get_queryset(), many=True)
         return Response(serializer.data)
 
@@ -282,14 +283,34 @@ class TaskRejectAPIView(APIView):
 
 class TaskCompletedAPIView(APIView):
     permission_classes = [IsAuthenticated]
-    queryset = Task.objects.all()
-
-    def get_object(self):
-        return get_object_or_404(Task, id=self.kwargs.get('pk'))
 
     def post(self, request, pk):
         '''Отметить задачу волонтером как выполненную'''
-        tasks = self.get_object()
-        tasks.status = 'pending_confirmation'
-        tasks.save()
+        task = get_object_or_404(Task, id=self.kwargs.get('pk'))
+        if task.status != 'in_progress':
+            return Response({"error": "Задача не находиться в работе"}, status=status.HTTP_400_BAD_REQUEST)
+        if task.volunteer != self.request.user:
+            return Response({"error": "Задача не у тебя в обратботке"}, status=status.HTTP_400_BAD_REQUEST)
+        task.status = 'pending_confirmation'
+        task.save()
         return Response({"success": True}, status=status.HTTP_200_OK)
+
+
+class TaskConfirmCompletedAPIVIew(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        '''Отметить задачу волонтера как выполненную'''
+        task = get_object_or_404(Task, id=self.kwargs.get('pk'))
+        if task.status != 'pending_confirmation':
+            return Response({"error": "Волонтер не подтвердил выполненение задачи"}, status=status.HTTP_400_BAD_REQUEST)
+        if task.user != request.user:
+            return Response(
+                {"error": "Только автор заявки может подтвердить выполнение"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        task.status = 'completed'
+        task.save()
+        return Response({"success": True}, status=status.HTTP_200_OK)
+
+

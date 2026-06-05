@@ -9,7 +9,8 @@ from .views import (
     TaskResponseAPIView,
     TaskAcceptAPIView,
     TaskRejectAPIView,
-    TaskCompletedAPIView
+    TaskCompletedAPIView,
+    TaskConfirmCompletedAPIVIew
 )
 
 urlpatterns = [
@@ -22,7 +23,7 @@ urlpatterns = [
     path('tasks/<int:pk>/responses/', TaskResponseAPIView.as_view()),
     path('tasks/responses/<int:pk>/accept/', TaskAcceptAPIView.as_view()),
     path('tasks/responses/<int:pk>/reject/', TaskRejectAPIView.as_view()),
-    path('/tasks/<int:pk>/mark-completed/', TaskCompletedAPIView.as_view()),
-
+    path('tasks/<int:pk>/mark-completed/', TaskCompletedAPIView.as_view()),
+    path('tasks/<int:pk>/confirm-completion/', TaskConfirmCompletedAPIVIew.as_view()),
 
 ]
