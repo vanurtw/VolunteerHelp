@@ -622,7 +622,7 @@ def post_task_accept_response():
         tags=['Отклики'],
         responses={
             200: openapi.Response(
-                description='Успешное удаление',
+                description='Успешный ответ',
                 schema=openapi.Schema(
                     type=openapi.TYPE_OBJECT,
                     properties={
@@ -631,9 +631,21 @@ def post_task_accept_response():
                             description="Статус операции",
                             example="True"
                         ),
-                        "task_id":openapi.Schema(
+                        "task_id": openapi.Schema(
                             type=openapi.TYPE_INTEGER,
                             description="id задачи"
+                        )
+                    }
+                )
+            ),
+            400: openapi.Response(
+                description='Ошибка валидации',
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'detail': openapi.Schema(
+                            type=openapi.TYPE_ARRAY,
+                            items=openapi.Schema(type=openapi.TYPE_STRING)
                         )
                     }
                 )
@@ -677,3 +689,155 @@ def post_task_accept_response():
         }
     )
 
+
+def post_task_completed():
+    return swagger_auto_schema(
+        operation_summary='Отметить задачу как выполненную. Доступно для волонтеров',
+        operation_description='''
+        Отметить задачу как выполненную. Доступно для авторизованных волонтеров.
+        
+        статус задчи меняется на ожидающую подтвержедния (pending_confirmation)
+        
+        Нужадющися должен подтвердить выполнение задачи
+        ''',
+        tags=['Отклики'],
+        responses={
+            200: openapi.Response(
+                description='Успешный ответ',
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "success": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Статус операции",
+                            example="True"
+                        )
+                    }
+                )
+            ),
+            400: openapi.Response(
+                description='Ошибка валидации',
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'detail': openapi.Schema(
+                            type=openapi.TYPE_ARRAY,
+                            items=openapi.Schema(type=openapi.TYPE_STRING)
+                        )
+                    }
+                )
+            ),
+            404: openapi.Response(
+                description='Не найдено',
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'detail': openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description='Объект не найден.'
+                        )
+                    }
+                )
+            ),
+            401: openapi.Response(
+                description="Ошибка авторизации",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'detail': openapi.Schema(
+                            type=openapi.TYPE_ARRAY,
+                            items=openapi.Schema(type=openapi.TYPE_STRING)
+                        )
+                    }
+                )
+            ),
+            403: openapi.Response(
+                description="Доступ запрещен",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'detail': openapi.Schema(
+                            type=openapi.TYPE_ARRAY,
+                            items=openapi.Schema(type=openapi.TYPE_STRING)
+                        )
+                    }
+                )
+            )
+        }
+    )
+
+
+def post_task_confirm_completed():
+    return swagger_auto_schema(
+        operation_summary='Подтвердить выполнение задачи. Доступно для нуждающихся',
+        operation_description='''
+        Подтвердить выполнение задачи. Доступно для авторизованных нуждающихся.
+        
+        Нуждающийся подтвержадет выполнение задачи, статус задачи меняется на completed
+        
+        ''',
+        tags=['Отклики'],
+        responses={
+            200: openapi.Response(
+                description='Успешное удаление',
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "success": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Статус операции",
+                            example="True"
+                        )
+                    }
+                )
+            ),
+            400: openapi.Response(
+                description='Ошибка валидации',
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'detail': openapi.Schema(
+                            type=openapi.TYPE_ARRAY,
+                            items=openapi.Schema(type=openapi.TYPE_STRING)
+                        )
+                    }
+                )
+            ),
+            404: openapi.Response(
+                description='Не найдено',
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'detail': openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description='Объект не найден.'
+                        )
+                    }
+                )
+            ),
+            401: openapi.Response(
+                description="Ошибка авторизации",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'detail': openapi.Schema(
+                            type=openapi.TYPE_ARRAY,
+                            items=openapi.Schema(type=openapi.TYPE_STRING)
+                        )
+                    }
+                )
+            ),
+            403: openapi.Response(
+                description="Доступ запрещен",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'detail': openapi.Schema(
+                            type=openapi.TYPE_ARRAY,
+                            items=openapi.Schema(type=openapi.TYPE_STRING)
+                        )
+                    }
+                )
+            )
+        }
+    )

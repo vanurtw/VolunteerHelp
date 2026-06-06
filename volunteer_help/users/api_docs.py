@@ -67,9 +67,10 @@ def user_registration_docs():
 
 def user_profile_get_docs():
     return swagger_auto_schema(
-        operation_summary='Получение профиля пользователя',
+        operation_summary='Получение своего профиля',
         operation_description='''
         Получение профиля пользователя.
+        
         Доступно только для авторизованных
         Возвращает профиль.
         ''',
@@ -97,7 +98,7 @@ def user_profile_get_docs():
 
 def user_profile_patch_docs():
     return swagger_auto_schema(
-        operation_summary='Обновление профиля',
+        operation_summary='Обновление своего профиля',
         operation_description='''
         Обновление профиля пользователя.
         Доступно только для авторизованных.

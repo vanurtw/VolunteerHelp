@@ -4,7 +4,8 @@ from .views import (
     ReviewReceivedAPIView,
     ReviewCreateAPIView,
     ReviewDestroyAPIView,
-    ReviewGivenAPIView
+    ReviewGivenAPIView,
+    UserAPIView
 )
 
 urlpatterns = [
@@ -12,5 +13,6 @@ urlpatterns = [
     path('reviews/given/', ReviewGivenAPIView.as_view()),
     path('tasks/<int:pk>/review/', ReviewCreateAPIView.as_view()),
     path('users/<int:pk>/reviews/', ReviewAPIView.as_view()),
+    path('users/<int:pk>/', UserAPIView.as_view()),
     path('reviews/<int:pk>/', ReviewDestroyAPIView.as_view())
 ]

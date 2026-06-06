@@ -24,7 +24,9 @@ from .api_docs import (
     delete_task_respond,
     get_task_my_response,
     get_task_response,
-    post_task_accept_response
+    post_task_accept_response,
+    post_task_completed,
+    post_task_confirm_completed
 )
 from .permissions import IsVolunteer, IsNeedy, IsOwner
 
@@ -36,7 +38,9 @@ class CategoriesAPIView(GenericAPIView):
 
     @categories_docs()
     def get(self, request):
-        '''Поолучение категорий для задач'''
+        '''
+        Поолучение категорий для задач
+        '''
         serializer = self.get_serializer(self.get_queryset(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -259,7 +263,7 @@ class TaskAcceptAPIView(APIView):
 
         response_task = get_object_or_404(ResponseTask, id=pk)
         if response_task.status != 'pending':
-            return Response({'detail': 'Отклик уже обработан'}, status=400)
+            return Response({'detail': 'Отклик уже обработан'}, status=status.HTTP_400_BAD_REQUEST)
 
         task = response_task.task
 
@@ -275,27 +279,29 @@ class TaskAcceptAPIView(APIView):
         task.status = 'in_progress'
         task.volunteer = response_task.volunteer
         task.save()
-        return Response({'success': True, 'task_id': task.id}, status=200)
+        return Response({'success': True, 'task_id': task.id}, status=status.HTTP_200_OK)
 
 
 class TaskCompletedAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsVolunteer]
 
+    @post_task_completed()
     def post(self, request, pk):
         '''Отметить задачу волонтером как выполненную'''
         task = get_object_or_404(Task, id=self.kwargs.get('pk'))
         if task.status != 'in_progress':
-            return Response({"error": "Задача не находиться в работе"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "Задача не находиться в работе"}, status=status.HTTP_400_BAD_REQUEST)
         if task.volunteer != self.request.user:
-            return Response({"error": "Задача не у тебя в обратботке"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "Задача не у тебя в обратботке"}, status=status.HTTP_400_BAD_REQUEST)
         task.status = 'pending_confirmation'
         task.save()
         return Response({"success": True}, status=status.HTTP_200_OK)
 
 
 class TaskConfirmCompletedAPIVIew(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsNeedy]
 
+    @post_task_confirm_completed()
     def post(self, request, pk):
         '''Отметить задачу волонтера как выполненную'''
         task = get_object_or_404(Task, id=self.kwargs.get('pk'))
