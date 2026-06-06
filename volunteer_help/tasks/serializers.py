@@ -112,13 +112,14 @@ class ReviewSerializer(serializers.ModelSerializer):
             'comment',
             'date_creation'
         ]
-        read_only_fields = ['from_user', 'date_creation']
+        read_only_fields = ['from_user', 'date_creation', 'task', 'to_user']
 
     def validate(self, data):
         request = self.context.get('request')
+        task = self.context.get('task')
         from_user = request.user
+        to_user = task.user
         to_user = data.get('to_user')
-        task = data.get('task')
 
         if from_user == to_user:
             raise serializers.ValidationError("Нельзя оставить отзыв на самого себя")

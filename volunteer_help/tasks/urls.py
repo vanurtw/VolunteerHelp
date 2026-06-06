@@ -11,7 +11,11 @@ from .views import (
     TaskRejectAPIView,
     TaskCompletedAPIView,
     TaskConfirmCompletedAPIVIew,
-    ReviewMyAPIView
+    ReviewReceivedAPIView,
+    ReviewCreateAPIView,
+    ReviewGivenAPIView,
+    ReviewAPIView,
+    ReviewDestroyAPIView
 )
 
 urlpatterns = [
@@ -26,5 +30,9 @@ urlpatterns = [
     path('tasks/responses/<int:pk>/reject/', TaskRejectAPIView.as_view()),
     path('tasks/<int:pk>/mark-completed/', TaskCompletedAPIView.as_view()),
     path('tasks/<int:pk>/confirm-completion/', TaskConfirmCompletedAPIVIew.as_view()),
-    path('reviews/my/', ReviewMyAPIView.as_view())
+    path('reviews/received/', ReviewReceivedAPIView.as_view()),
+    path('reviews/given/', ReviewGivenAPIView.as_view()),
+    path('tasks/<int:pk>/review/', ReviewCreateAPIView.as_view()),
+    path('users/<int:pk>/reviews/', ReviewAPIView.as_view()),
+    path('reviews/<int:pk>/', ReviewDestroyAPIView.as_view())
 ]

@@ -109,12 +109,13 @@ class Review(models.Model):
         (4, 4),
         (5, 5)
     )
+    # кто оставил
     from_user = models.ForeignKey(
         MyUser,
         on_delete=models.CASCADE,
         related_name='reviews_given'
     )
-
+    # на кого оставил
     to_user = models.ForeignKey(
         MyUser,
         on_delete=models.CASCADE,
