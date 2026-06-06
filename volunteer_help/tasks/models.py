@@ -103,11 +103,11 @@ class ResponseTask(models.Model):
 
 class Review(models.Model):
     CHOICES_RATING = (
-        ('1', 1),
-        ('2', 2),
-        ('3', 3),
-        ('4', 4),
-        ('5', 5)
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5)
     )
     from_user = models.ForeignKey(
         MyUser,
