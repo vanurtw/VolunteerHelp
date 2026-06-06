@@ -1,6 +1,5 @@
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from users.models import MyUser
 from django.db.models import Avg
 from .models import Review
 
