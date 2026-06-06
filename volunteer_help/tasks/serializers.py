@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Category, Task, ResponseTask
 from users.models import MyUser
+from .services import Location
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -23,8 +24,23 @@ class UserTaskSerializer(serializers.ModelSerializer):
         ]
 
 
+class TaskCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = [
+            'title',
+            'description',
+            'address',
+            'latitude',
+            'longitude',
+            'status',
+            'date_due',
+            'category',
+        ]
+
+
 class TaskSerializer(serializers.ModelSerializer):
-    distance = serializers.SerializerMethodField()
+    distance = serializers.SerializerMethodField(help_text='Возвращает дистанцию от пользователя до задачи в км')
     category = serializers.PrimaryKeyRelatedField(
         queryset=Category.objects.all(),
         write_only=True
@@ -34,7 +50,15 @@ class TaskSerializer(serializers.ModelSerializer):
         read_only=True
     )
     user = UserTaskSerializer(read_only=True)
-    distance = serializers.FloatField(default=0, read_only=True)
+
+    def get_distance(self, instance):
+        user = self.context.get('request').user
+        lat1 = user.latitude
+        lon1 = user.longitude
+        lat2 = instance.latitude
+        lon2 = instance.longitude
+        distance = Location.calculate_distance(lat1, lon1, lat2, lon2)
+        return round(distance, 2)
 
     class Meta:
         model = Task

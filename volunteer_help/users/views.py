@@ -26,6 +26,7 @@ class UserRegistrationAPIView(GenericAPIView):
 
     @user_registration_docs()
     def post(self, request):
+        '''Регистрация пользователя'''
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -45,11 +46,13 @@ class UserProfileAPIView(GenericAPIView):
 
     @user_profile_get_docs()
     def get(self, request):
+        '''Получить свой профиль'''
         serializer = self.serializer_class(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @user_profile_patch_docs()
     def patch(self, request):
+        '''Обновить свой профиль'''
         user = request.user
         serializer = self.serializer_class(user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)

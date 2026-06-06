@@ -1,4 +1,3 @@
-from django.template.context_processors import request
 from rest_framework.response import Response
 from .models import Category, Task, ResponseTask
 from .serializers import (
@@ -11,22 +10,23 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from .services import Location
 from django.shortcuts import get_object_or_404
-from rest_framework import permissions
-from rest_framework.mixins import DestroyModelMixin
 from rest_framework import status
 from rest_framework.views import APIView
 from .api_docs import (
     categories_docs,
-    get_tasks_docs
+    get_tasks_docs,
+    post_tasks_docs,
+    get_detail_task,
+    patch_detail_task,
+    delete_detail_task,
+    get_my_tasks,
+    post_task_respond,
+    delete_task_respond,
+    get_task_my_response,
+    get_task_response,
+    post_task_accept_response
 )
-
-
-class IsOwner(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        print(request.method)
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return request.user == obj.user
+from .permissions import IsVolunteer, IsNeedy, IsOwner
 
 
 class CategoriesAPIView(GenericAPIView):
@@ -37,8 +37,8 @@ class CategoriesAPIView(GenericAPIView):
     @categories_docs()
     def get(self, request):
         '''Поолучение категорий для задач'''
-        serializer = self.serializer_class(self.get_queryset(), many=True)
-        return Response(serializer.data)
+        serializer = self.get_serializer(self.get_queryset(), many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class TasksListAPIView(GenericAPIView):
@@ -77,25 +77,28 @@ class TasksListAPIView(GenericAPIView):
 
     @get_tasks_docs()
     def get(self, request):
+        '''Поиск задач. Только для волонтеров.'''
         if request.user.status != 'volunteer':
             return Response(
-                {'error': 'Только волонтёры могут искать задачи'},
+                {'detail': 'Только волонтёры могут искать задачи'},
                 status=status.HTTP_403_FORBIDDEN
             )
         tasks = self.get_queryset()
-        serializer = self.serializer_class(tasks, many=True)
-        return Response(serializer.data)
+        serializer = self.get_serializer(tasks, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @post_tasks_docs()
     def post(self, request):
+        '''Создание задачи. Только для нуждающихся'''
         if request.user.status != 'needy':
             return Response(
-                {'error': 'Только нуждающийся могут создать задачу'},
+                {'detail': 'Только нуждающиеся могут создавать задачи'},
                 status=status.HTTP_403_FORBIDDEN
             )
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(user=request.user)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class TasksDetailAPIView(GenericAPIView):
@@ -103,56 +106,75 @@ class TasksDetailAPIView(GenericAPIView):
     permission_classes = [IsAuthenticated, IsOwner]
     queryset = Task.objects.all()
 
+    @get_detail_task()
     def get(self, request, pk):
+        '''Получить задачу детально'''
         obj = get_object_or_404(Task, id=pk)
-        serializer = self.serializer_class(obj)
-        return Response(serializer.data)
+        serializer = self.get_serializer(obj)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @patch_detail_task()
     def patch(self, request, pk):
+        '''Обновить задачу. Только для нуждающихся'''
+        if request.user.status != 'needy':
+            return Response(
+                {'detail': 'Только нуждающийся могут менять задачу'},
+                status=status.HTTP_403_FORBIDDEN
+            )
         instance = self.get_object()
         if instance.status != 'open':
             return Response({'error': 'задача не имеет статус open'}, status=status.HTTP_400_BAD_REQUEST)
-        serializer = self.serializer_class(instance=instance, data=request.data, partial=True)
+        if request.user != instance.user:
+            return Response(
+                {'detail': 'Это не твоя задача'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        serializer = self.get_serializer(instance=instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @delete_detail_task()
     def delete(self, request, pk):
+        '''Удалить задачу только для нуждающихся'''
         instance = self.get_object()
+        if request.user != instance.user:
+            return Response(
+                {'detail': 'Это не твоя задача'},
+                status=status.HTTP_403_FORBIDDEN
+            )
         if instance.status != 'open':
-            return Response({'error': 'задача не имеет статус open'}, status=status.HTTP_400_BAD_REQUEST)
-        instance.delet()
+            return Response({'detail': 'задача не имеет статус open'}, status=status.HTTP_400_BAD_REQUEST)
+        instance.delete()
         return Response({"status": "ok"}, status=status.HTTP_204_NO_CONTENT)
 
 
 class TasksMyAPIView(GenericAPIView):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsNeedy]
 
+    @get_my_tasks()
     def get(self, request):
+        '''Мои задачи только для волонтеров'''
         tasks = request.user.user_tasks.all()
-        serializer = self.serializer_class(tasks, many=True)
-        return Response(serializer.data)
+        serializer = self.get_serializer(tasks, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class TaskRespondAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsVolunteer]
 
+    @post_task_respond()
     def post(self, request, pk):
-        '''Откликнуться на заявку (создать Response)'''
+        '''Откликнуться на заявку (создать Response) Только для волонтеров'''
         task = get_object_or_404(Task, id=pk)
         user = request.user
 
         if task.user == user:
             return Response(
-                {'error': 'Нельзя откликнуться на свою заявку'},
+                {'detail': 'Нельзя откликнуться на свою заявку'},
                 status=status.HTTP_400_BAD_REQUEST
-            )
-        if user.status != 'volunteer':
-            return Response(
-                {'error': 'Только волонтёры могут откликаться'},
-                status=status.HTTP_403_FORBIDDEN
             )
         if task.status != 'open':
             return Response(
@@ -175,22 +197,16 @@ class TaskRespondAPIView(APIView):
         return Response(
             {
                 'success': True,
-                'message': 'Отклик отправлен',
                 'response_id': response.id,
                 'task_id': task.id
             },
             status=status.HTTP_201_CREATED
         )
 
+    @delete_task_respond()
     def delete(self, request, pk):
 
-        '''Отменить свой отклик (только если статус pending)'''
-
-        if request.user.status != 'volunteer':
-            return Response(
-                {'error': 'Доступно только для волонтеров'},
-                status=status.HTTP_403_FORBIDDEN
-            )
+        '''Отменить свой отклик (только если статус pending) Только для волонтеров'''
 
         task = ResponseTask.objects.filter(
             status='pending',
@@ -198,89 +214,66 @@ class TaskRespondAPIView(APIView):
             volunteer=request.user
         ).first()
         if not task:
-            return Response({'error': 'Отклик не найден'}, status=404)
+            return Response({'detail': 'Отклик не найден'}, status=404)
         task.delete()
         return Response({'status': 'ok'}, status=status.HTTP_204_NO_CONTENT)
 
 
 class TaskMyResponseAPIView(GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsVolunteer]
     serializer_class = ResponseTaskMySerializer
 
     def get_queryset(self):
         return self.request.user.users_response_tasks.all()
 
+    @get_task_my_response()
     def get(self, request):
-        '''Все мои отклики (с их статусами)'''
-        if request.user.status != 'volunteer':
-            return Response(
-                {'error': 'Доступно только для волонтеров'},
-                status=status.HTTP_403_FORBIDDEN
-            )
+        '''Все мои отклики (с их статусами) доступно только для волонтеров'''
         data = self.get_queryset()
         serializer = self.serializer_class(data, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class TaskResponseAPIView(GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsNeedy]
     serializer_class = ResponseTaskSerializer
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         return ResponseTask.objects.filter(task__id=pk, task__user=self.request.user)
 
+    @get_task_response()
     def get(self, request, pk):
+        '''Получить отклики на задачу. Только для нуждающихся'''
         qs = self.get_queryset()
         serializer = self.serializer_class(qs, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class TaskAcceptAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsNeedy]
 
+    @post_task_accept_response()
     def post(self, request, pk):
-        '''Принятие отклика на задачу'''
+        '''Принятие отклика на задачу. Доступно для нуждающихся'''
 
         response_task = get_object_or_404(ResponseTask, id=pk)
         if response_task.status != 'pending':
-            return Response({'error': 'Отклик уже обработан'}, status=400)
+            return Response({'detail': 'Отклик уже обработан'}, status=400)
 
         task = response_task.task
 
         if task.user != request.user:
-            return Response({'error': 'Не ваша заявка'}, status=403)
+            return Response({'detail': 'Не ваша заявка'}, status=403)
 
         if task.status != 'open':
-            return Response({'error': 'У задачи статус отличается от <open>'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'У задачи статус отличается от <open>'}, status=status.HTTP_400_BAD_REQUEST)
 
         ResponseTask.objects.filter(task=task).exclude(id=response_task.id).update(status='rejected')
         response_task.status = 'accepted'
         response_task.save()
         task.status = 'in_progress'
         task.volunteer = response_task.volunteer
-        task.save()
-        return Response({'success': True, 'task_id': task.id}, status=200)
-
-
-class TaskRejectAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, pk):
-        '''отмена отклика выбранного волонтера'''
-        response_task = get_object_or_404(ResponseTask, id=pk)
-
-        if response_task.status != 'accepted':
-            return Response({'error': 'Можно отменить только принятый отклик'}, status=400)
-
-        task = response_task.task
-
-        if task.user != request.user:
-            return Response({'error': 'Не ваша заявка'}, status=403)
-
-        ResponseTask.objects.filter(task=task).update(status='pending')
-        task.status = 'open'
-        task.volunteer = None
         task.save()
         return Response({'success': True, 'task_id': task.id}, status=200)
 
