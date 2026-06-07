@@ -4,7 +4,7 @@ ENV PYTHONBUFFERED=1
 
 RUN pip install --upgrade pip
 
-WORKDIR /app/www/geopints
+WORKDIR /app/www/volunteer_help
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt

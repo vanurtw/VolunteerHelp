@@ -53,7 +53,14 @@ class ReviewCreateAPIView(GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = ReviewSerializer
 
+    def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return Review.objects.none()
+        return Review.objects.all()
+
     def get_object(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return None
         return get_object_or_404(Task, id=self.kwargs.get("pk"))
 
     def get_serializer_context(self):

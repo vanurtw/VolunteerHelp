@@ -9,11 +9,13 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id', 'title', 'user', 'status']
+    list_display_links = ['id', 'title']
+    list_filter = ['user', 'status']
 
 
 @admin.register(ResponseTask)
 class ResponseTaskAdmin(admin.ModelAdmin):
-    pass
-
-
+    list_display = ['id', 'task', 'volunteer', 'status']
+    list_display_links = ['id', 'task']
+    list_filter = ['volunteer', 'status']

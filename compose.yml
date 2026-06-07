@@ -1,0 +1,65 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: psqr
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    networks:
+      - dbnet
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    links:
+      - "postgres:db"
+    networks:
+      - dbnet
+    depends_on:
+      - postgres
+
+  volunteer_help:
+    build: ./volunteer_help
+    image: volunteer_help
+    container_name: volunteer_help
+    restart: always
+    command: "python manage.py runserver"
+    env_file:
+      - .env
+    links:
+      - "postgres:dbps"
+    ports:
+      - "8000:8000"
+    networks:
+      - dbnet
+    volumes:
+      - ./volunteer_help:/app/www/volunteer_help
+    depends_on:
+      - postgres
+  nginx:
+    image: nginx:latest
+    container_name: nginx-server
+    restart: always
+    networks:
+      - dbnet
+    expose:
+      - 8088
+    ports:
+      - "80:8088"
+    volumes:
+      - ./geopoints/static:/app/www/geopoints/static
+      - ./geopoints/logs:/app/www/geopoints/logs
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - geopoints
+
+networks:
+  dbnet:
+    driver: bridge
+volumes:
+  postgres-data:

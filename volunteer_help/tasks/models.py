@@ -72,7 +72,7 @@ class Task(models.Model):
     status_objects = TaskStatusManager()
 
     def __str__(self):
-        return self.title
+        return f"{self.title} -- {self.user}"
 
     class Meta:
         verbose_name = 'Задача'
@@ -94,6 +94,9 @@ class ResponseTask(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='responses')
     volunteer = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='users_response_tasks')
     date_creation = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Отклик {self.volunteer} на {self.task.title}"
 
     class Meta:
         unique_together = ('task', 'volunteer')

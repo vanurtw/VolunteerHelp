@@ -34,6 +34,9 @@ class Review(models.Model):
     comment = models.TextField(blank=True, null=True)
     date_creation = models.DateField(auto_now_add=True)
 
+    def __str__(self):
+        return f"Отзыв {self.from_user} на {self.to_user}"
+
     class Meta:
         unique_together = ('task', 'from_user')
         ordering = ['-date_creation']

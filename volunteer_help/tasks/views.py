@@ -243,6 +243,8 @@ class TaskResponseAPIView(GenericAPIView):
     serializer_class = ResponseTaskSerializer
 
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return ResponseTask.objects.none()
         pk = self.kwargs.get('pk')
         return ResponseTask.objects.filter(task__id=pk, task__user=self.request.user)
 

@@ -1,0 +1,1132 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2026-06-07T10:35:55.642Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "1",
+    "object_repr": "admin@admin.ru",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Username\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2026-06-07T10:36:59.085Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "1",
+    "object_repr": "admin@admin.ru",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Description\", \"Phone\", \"City\", \"Latitude\", \"Longitude\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2026-06-07T10:37:16.264Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "2",
+    "object_repr": "",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2026-06-07T10:37:37.315Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "2",
+    "object_repr": "",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2026-06-07T10:40:09.644Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "3",
+    "object_repr": "elena@example.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Description\", \"Phone\", \"City\", \"Latitude\", \"Longitude\", \"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2026-06-07T10:40:43.075Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "4",
+    "object_repr": "mikhail@example.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Description\", \"Phone\", \"Latitude\", \"Longitude\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2026-06-07T10:41:09.468Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "4",
+    "object_repr": "mikhail@example.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2026-06-07T10:43:03.294Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "1",
+    "object_repr": "Уборка",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2026-06-07T10:43:07.825Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "Помощь животным",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2026-06-07T10:43:13.254Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "3",
+    "object_repr": "Доставка",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2026-06-07T10:43:17.911Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "4",
+    "object_repr": "Помощь пожилым",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2026-06-07T10:43:22.155Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "5",
+    "object_repr": "Мелкий ремонт",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2026-06-07T10:43:30.141Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "6",
+    "object_repr": "Помощь с документами",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2026-06-07T10:43:34.497Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "7",
+    "object_repr": "Другое",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2026-06-07T10:44:31.134Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "Помыть окна",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2026-06-07T10:45:07.313Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "2",
+    "object_repr": "Выгулять собаку",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2026-06-07T10:45:48.515Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Убрать квартиру",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2026-06-07T10:46:26.706Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "4",
+    "object_repr": "Покормить кота",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2026-06-07T10:47:00.231Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "5",
+    "object_repr": "Починить кран",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2026-06-07T10:47:29.725Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "6",
+    "object_repr": "Забрать посылку",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2026-06-07T10:48:34.092Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "7",
+    "object_repr": "Сопроводить в больницу",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2026-06-07T10:49:17.061Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "8",
+    "object_repr": "Помочь с переездом",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2026-06-07T10:50:02.408Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "ResponseTask object (1)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2026-06-07T10:50:06.030Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "ResponseTask object (1)",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2026-06-07T10:50:14.484Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "ResponseTask object (2)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2026-06-07T10:50:19.826Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "3",
+    "object_repr": "ResponseTask object (3)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2026-06-07T10:50:27.743Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "4",
+    "object_repr": "ResponseTask object (4)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2026-06-07T10:57:08.757Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "9",
+    "object_repr": "Убрать квартиру -- elena@example.com  - needy",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2026-06-07T10:57:20.494Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "5",
+    "object_repr": "Отклик admin@admin.ru  - volunteer на Убрать квартиру",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2026-06-07T10:57:42.272Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "1",
+    "object_repr": "Отзыв admin@admin.ru  - volunteer на elena@example.com  - needy",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2026-06-07T10:58:00.384Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "Отзыв elena@example.com  - needy на admin@admin.ru  - volunteer",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 1,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 1,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 1,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": 1,
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 3,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 3,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 3,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can view permission",
+    "content_type": 3,
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 2,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 2,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 2,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can view group",
+    "content_type": 2,
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 4,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 4,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 4,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can view content type",
+    "content_type": 4,
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 5,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 5,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 5,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can view session",
+    "content_type": 5,
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can add Пользователь",
+    "content_type": 6,
+    "codename": "add_myuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can change Пользователь",
+    "content_type": 6,
+    "codename": "change_myuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can delete Пользователь",
+    "content_type": 6,
+    "codename": "delete_myuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can view Пользователь",
+    "content_type": 6,
+    "codename": "view_myuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add Категория",
+    "content_type": 7,
+    "codename": "add_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change Категория",
+    "content_type": 7,
+    "codename": "change_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete Категория",
+    "content_type": 7,
+    "codename": "delete_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can view Категория",
+    "content_type": 7,
+    "codename": "view_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 29,
+  "fields": {
+    "name": "Can add Задача",
+    "content_type": 9,
+    "codename": "add_task"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 30,
+  "fields": {
+    "name": "Can change Задача",
+    "content_type": 9,
+    "codename": "change_task"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 31,
+  "fields": {
+    "name": "Can delete Задача",
+    "content_type": 9,
+    "codename": "delete_task"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 32,
+  "fields": {
+    "name": "Can view Задача",
+    "content_type": 9,
+    "codename": "view_task"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 33,
+  "fields": {
+    "name": "Can add Отклик",
+    "content_type": 8,
+    "codename": "add_responsetask"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 34,
+  "fields": {
+    "name": "Can change Отклик",
+    "content_type": 8,
+    "codename": "change_responsetask"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 35,
+  "fields": {
+    "name": "Can delete Отклик",
+    "content_type": 8,
+    "codename": "delete_responsetask"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 36,
+  "fields": {
+    "name": "Can view Отклик",
+    "content_type": 8,
+    "codename": "view_responsetask"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 37,
+  "fields": {
+    "name": "Can add review",
+    "content_type": 10,
+    "codename": "add_review"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 38,
+  "fields": {
+    "name": "Can change review",
+    "content_type": 10,
+    "codename": "change_review"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 39,
+  "fields": {
+    "name": "Can delete review",
+    "content_type": 10,
+    "codename": "delete_review"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 40,
+  "fields": {
+    "name": "Can view review",
+    "content_type": 10,
+    "codename": "view_review"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "inp5cbv306lxj9hbga7rc40hkbajgpsh",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQAP-yZ0OAUsAevfcNZBcWqRpISnsy_t006UGvM5N5Q8B9K2HvvIYlwQQKLr-MMD65HiI9sN6biK1u60LiSMRpu5hb4tftbP8GBXuBCXzOTlLUqBLKqJRjGrLOzjAlaeTo2CBKvhJZjUTRDmRQkfeUrBzVAJ8vDWs4xQ:1wWApY:IFq843Z1JvQ-BkbpXYb7l0HP4Di8-dceInNz24W8AQQ",
+    "expire_date": "2026-06-21T10:34:12.614Z"
+  }
+},
+{
+  "model": "users.myuser",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$9sscLFmsogtEQCA8VOUpS8$QQxHMrcZsi2vtQthNxsFxbmiT4r5lW3HHEDxvxDN+zo=",
+    "last_login": "2026-06-07T10:34:12Z",
+    "is_superuser": true,
+    "email": "admin@admin.ru",
+    "is_staff": true,
+    "date_joined": "2026-06-07T10:33:49Z",
+    "username": "admin",
+    "first_name": "Админ",
+    "description": "Админ",
+    "phone": "+79001112233",
+    "city": "Воронеж",
+    "latitude": 51.66,
+    "longitude": 39.2,
+    "status": "volunteer",
+    "rating": 5.0,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.myuser",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$8Vwwz06rnKcbUxRwahUhfh$8Ghbj5FmFQFLfwFBJnS2Xp0bcpfO1MNGpOulQuWsb9E=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "elena@example.com",
+    "is_staff": false,
+    "date_joined": "2026-06-07T10:38:46Z",
+    "username": "elena",
+    "first_name": "Елена",
+    "description": "Елена Иванова",
+    "phone": "+79001112233",
+    "city": "Воронеж",
+    "latitude": 51.69,
+    "longitude": 39.22,
+    "status": "needy",
+    "rating": 5.0,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.myuser",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$Duui4ssR5EdExlgKQHkCjz$4DNGu1yGLtuOZtGEQzdUovQ2zB4eJR0LRNrPS9CZXA4=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "mikhail@example.com",
+    "is_staff": false,
+    "date_joined": "2026-06-07T10:39:11Z",
+    "username": "mikhail",
+    "first_name": "Михаил",
+    "description": "Михаил",
+    "phone": "+79001112232",
+    "city": null,
+    "latitude": 51.63,
+    "longitude": 39.18,
+    "status": "needy",
+    "rating": 0.0,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "tasks.category",
+  "pk": 1,
+  "fields": {
+    "title": "Уборка",
+    "slug": "uborka",
+    "date_creation": "2026-06-07"
+  }
+},
+{
+  "model": "tasks.category",
+  "pk": 2,
+  "fields": {
+    "title": "Помощь животным",
+    "slug": "pomosh-zhivotnym",
+    "date_creation": "2026-06-07"
+  }
+},
+{
+  "model": "tasks.category",
+  "pk": 3,
+  "fields": {
+    "title": "Доставка",
+    "slug": "dostavka",
+    "date_creation": "2026-06-07"
+  }
+},
+{
+  "model": "tasks.category",
+  "pk": 4,
+  "fields": {
+    "title": "Помощь пожилым",
+    "slug": "pomosh-pozhilym",
+    "date_creation": "2026-06-07"
+  }
+},
+{
+  "model": "tasks.category",
+  "pk": 5,
+  "fields": {
+    "title": "Мелкий ремонт",
+    "slug": "melkij-remont",
+    "date_creation": "2026-06-07"
+  }
+},
+{
+  "model": "tasks.category",
+  "pk": 6,
+  "fields": {
+    "title": "Помощь с документами",
+    "slug": "pomosh-s-dokumentami",
+    "date_creation": "2026-06-07"
+  }
+},
+{
+  "model": "tasks.category",
+  "pk": 7,
+  "fields": {
+    "title": "Другое",
+    "slug": "drugoe",
+    "date_creation": "2026-06-07"
+  }
+},
+{
+  "model": "tasks.task",
+  "pk": 1,
+  "fields": {
+    "user": 3,
+    "title": "Помыть окна",
+    "description": "Помыть окна",
+    "category": 1,
+    "address": "ул. Плехановская, 10",
+    "volunteer": null,
+    "latitude": "51.660000",
+    "longitude": "39.200000",
+    "status": "open",
+    "date_creation": "2026-06-07",
+    "date_due": "2026-06-17T10:44:30Z"
+  }
+},
+{
+  "model": "tasks.task",
+  "pk": 2,
+  "fields": {
+    "user": 3,
+    "title": "Выгулять собаку",
+    "description": "Выгулять собаку",
+    "category": 2,
+    "address": "ул. Онежская, 5",
+    "volunteer": null,
+    "latitude": "51.685000",
+    "longitude": "39.210000",
+    "status": "open",
+    "date_creation": "2026-06-07",
+    "date_due": "2026-06-07T10:45:05Z"
+  }
+},
+{
+  "model": "tasks.task",
+  "pk": 3,
+  "fields": {
+    "user": 4,
+    "title": "Убрать квартиру",
+    "description": "Убрать квартиру",
+    "category": 1,
+    "address": "ул. Остужева, 20",
+    "volunteer": null,
+    "latitude": "51.620000",
+    "longitude": "39.160000",
+    "status": "open",
+    "date_creation": "2026-06-07",
+    "date_due": "2026-06-07T10:45:46Z"
+  }
+},
+{
+  "model": "tasks.task",
+  "pk": 4,
+  "fields": {
+    "user": 4,
+    "title": "Покормить кота",
+    "description": "Покормить кота",
+    "category": 2,
+    "address": "ул. Тимирязева, 3",
+    "volunteer": null,
+    "latitude": "51.675000",
+    "longitude": "39.240000",
+    "status": "open",
+    "date_creation": "2026-06-07",
+    "date_due": "2026-06-07T10:46:25Z"
+  }
+},
+{
+  "model": "tasks.task",
+  "pk": 5,
+  "fields": {
+    "user": 3,
+    "title": "Починить кран",
+    "description": "Починить кран",
+    "category": 5,
+    "address": "ул. Моисеева, 25",
+    "volunteer": null,
+    "latitude": "51.640000",
+    "longitude": "39.140000",
+    "status": "open",
+    "date_creation": "2026-06-07",
+    "date_due": "2026-06-07T10:46:57Z"
+  }
+},
+{
+  "model": "tasks.task",
+  "pk": 6,
+  "fields": {
+    "user": 4,
+    "title": "Забрать посылку",
+    "description": "Забрать посылку",
+    "category": 3,
+    "address": "ул. Кольцовская, 30",
+    "volunteer": null,
+    "latitude": "51.655000",
+    "longitude": "39.185000",
+    "status": "open",
+    "date_creation": "2026-06-07",
+    "date_due": "2026-06-07T10:47:28Z"
+  }
+},
+{
+  "model": "tasks.task",
+  "pk": 7,
+  "fields": {
+    "user": 3,
+    "title": "Сопроводить в больницу",
+    "description": "Сопроводить в больницу",
+    "category": 7,
+    "address": "ул. 45-й Стрелковой Дивизии, 8",
+    "volunteer": null,
+    "latitude": "51.710000",
+    "longitude": "39.200000",
+    "status": "open",
+    "date_creation": "2026-06-07",
+    "date_due": "2026-06-07T10:48:32Z"
+  }
+},
+{
+  "model": "tasks.task",
+  "pk": 8,
+  "fields": {
+    "user": 4,
+    "title": "Помочь с переездом",
+    "description": "Помочь с переездом",
+    "category": 7,
+    "address": "ул. Владимира Невского, 15",
+    "volunteer": null,
+    "latitude": "51.700000",
+    "longitude": "39.230000",
+    "status": "open",
+    "date_creation": "2026-06-07",
+    "date_due": "2026-06-07T10:49:16Z"
+  }
+},
+{
+  "model": "tasks.task",
+  "pk": 9,
+  "fields": {
+    "user": 3,
+    "title": "Убрать квартиру",
+    "description": "Убрать квартиру",
+    "category": 1,
+    "address": "ул. Кольцовская, 29",
+    "volunteer": 1,
+    "latitude": "51.655000",
+    "longitude": "39.185000",
+    "status": "completed",
+    "date_creation": "2026-06-07",
+    "date_due": "2026-06-07T10:57:06Z"
+  }
+},
+{
+  "model": "tasks.responsetask",
+  "pk": 1,
+  "fields": {
+    "status": "pending",
+    "task": 1,
+    "volunteer": 1,
+    "date_creation": "2026-06-07"
+  }
+},
+{
+  "model": "tasks.responsetask",
+  "pk": 2,
+  "fields": {
+    "status": "pending",
+    "task": 6,
+    "volunteer": 1,
+    "date_creation": "2026-06-07"
+  }
+},
+{
+  "model": "tasks.responsetask",
+  "pk": 3,
+  "fields": {
+    "status": "pending",
+    "task": 3,
+    "volunteer": 1,
+    "date_creation": "2026-06-07"
+  }
+},
+{
+  "model": "tasks.responsetask",
+  "pk": 4,
+  "fields": {
+    "status": "pending",
+    "task": 8,
+    "volunteer": 4,
+    "date_creation": "2026-06-07"
+  }
+},
+{
+  "model": "tasks.responsetask",
+  "pk": 5,
+  "fields": {
+    "status": "accepted",
+    "task": 9,
+    "volunteer": 1,
+    "date_creation": "2026-06-07"
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 1,
+  "fields": {
+    "from_user": 1,
+    "to_user": 3,
+    "task": 9,
+    "rating": 5,
+    "comment": "Все хорошо!",
+    "date_creation": "2026-06-07"
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 2,
+  "fields": {
+    "from_user": 3,
+    "to_user": 1,
+    "task": 9,
+    "rating": 5,
+    "comment": "Все замачательно!",
+    "date_creation": "2026-06-07"
+  }
+}
+]
