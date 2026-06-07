@@ -7,11 +7,11 @@
 - **Adminer** - веб-интерфейс управления БД
 - **Docker** - контейнеризация всех сервисов
 - **JWT** -  реализация токенов
-- 
+  
 ## 🚀 Запуск проекта
 
 ### 1. Клонируйте репозиторий
-```git clone https://github.com/vanurtw/GeopointsAPI.git```
+```https://github.com/vanurtw/VolunteerHelp.git```
 
 
 ### 2. Настройте переменные окружения 
