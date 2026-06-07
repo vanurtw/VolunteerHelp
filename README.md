@@ -28,12 +28,12 @@
 
 Пример .env
 
-DB_USER=volunteeruser
-DB_NAME=volunteerhelp
-DB_PASSWORD=volunteeruser
-DB_HOST=dbps
-DB_PORT=5432
-SECRET_KEY=django-insecure-)p92v2i8j$9^yqdi17jwsh!n3$5&=i^$(=5xqyehbntggzw57f
+- DB_USER=volunteeruser
+- DB_NAME=volunteerhelp
+- DB_PASSWORD=volunteeruser
+- DB_HOST=dbps
+- DB_PORT=5432
+- SECRET_KEY=django-insecure-)p92v2i8j$9^yqdi17jwsh!n3$5&=i^$(=5xqyehbntggzw57f
 
 
 ### 3. Запустите проект через Dcoker
