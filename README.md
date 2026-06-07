@@ -42,7 +42,7 @@
 
 |Сервис|URL|Описание|
 |------|---|--------|
-|🚀 API	|http://localhost:80|REST API
-👨‍💼 Adminer|http://localhost:8080|Управление БД
-👑 Админка Django|http://localhost:8000/admin|Администрирование
-📚 API Документация|http://localhost:8000/swagger/|Swagger/Redoc
+|🚀 API	|http://127.0.0.1:80|REST API
+👨‍💼 Adminer|http://127.0.0.1:8080/|Управление БД
+👑 Админка Django|http://127.0.0.1:80/admin/|Администрирование
+📚 API Документация|http://127.0.0.1:80/swagger/|Swagger/Redoc
