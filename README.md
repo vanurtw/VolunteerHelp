@@ -48,7 +48,9 @@
 Можно загрузить начальные данные для БД (опционально): ```docker-compose exec volunteer_help python manage.py loaddata db.json```
 
 остановить и удалить контейнеры ```docker compose down```
+
 остановить контейнеры ```docker-compose stop```
+
 запустить контейнеры ```docker compose start```
 
 
