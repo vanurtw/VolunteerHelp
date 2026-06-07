@@ -28,7 +28,7 @@ services:
     image: volunteer_help
     container_name: volunteer_help
     restart: always
-    command: "python manage.py runserver"
+    command: "gunicorn -c gunicorn.py core.wsgi"
     env_file:
       - .env
     links:
@@ -52,11 +52,11 @@ services:
     ports:
       - "80:8088"
     volumes:
-      - ./geopoints/static:/app/www/geopoints/static
-      - ./geopoints/logs:/app/www/geopoints/logs
+      - ./volunteer_help/static:/app/www/volunteer_help/static
+      - ./volunteer_help/logs:/app/www/volunteer_help/logs
       - ./nginx:/etc/nginx/conf.d
     depends_on:
-      - geopoints
+      - volunteer_help
 
 networks:
   dbnet:
