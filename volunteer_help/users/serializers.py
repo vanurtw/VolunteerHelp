@@ -39,6 +39,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'first_name',
             'description',
             'phone',
+            'status',
             'city',
             'latitude',
             'longitude',

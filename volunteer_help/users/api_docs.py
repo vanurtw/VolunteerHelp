@@ -36,6 +36,10 @@ def user_registration_docs():
                                     title="username",
                                     type=openapi.TYPE_STRING
                                 ),
+                                "status": openapi.Schema(
+                                    title="status",
+                                    type=openapi.TYPE_STRING
+                                ),
                                 "email": openapi.Schema(
                                     title="email",
                                     type=openapi.TYPE_STRING

@@ -34,6 +34,7 @@ class UserRegistrationAPIView(GenericAPIView):
         data['user'] = {
             'id': user.id,
             'username': user.username,
+            'status':user.status,
             'email': user.email
         }
         return Response(data, status=status.HTTP_201_CREATED)
@@ -47,7 +48,7 @@ class UserProfileAPIView(GenericAPIView):
     @user_profile_get_docs()
     def get(self, request):
         '''Получить свой профиль'''
-        serializer = self.serializer_class(request.user)
+        serializer = self.get_serializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @user_profile_patch_docs()
