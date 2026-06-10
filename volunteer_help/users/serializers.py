@@ -12,9 +12,12 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def save(self, **kwargs):
         data = self.validated_data
         username = data.get('username')
+        first_name = data.get('first_name')
 
         if not username:
             data['username'] = data.get('first_name', '')
+        if not first_name:
+            data['first_name'] = data.get('username', '')
 
         password = data.pop('password')
         data.pop('password2')
