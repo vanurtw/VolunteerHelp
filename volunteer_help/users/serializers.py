@@ -6,6 +6,27 @@ from django.contrib.auth.password_validation import validate_password
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(validators=[validate_password])
     password2 = serializers.CharField()
+    username = serializers.CharField(required=False)
+
+
+    def save(self, **kwargs):
+        data = self.validated_data
+        username = data.get('username')
+
+        if not username:
+            data['username'] = data.get('first_name', '')
+
+        password = data.pop('password')
+        data.pop('password2')
+        username_value = data.pop('username')
+
+        user = self.Meta.model.objects.create_user(
+            username=username_value,
+            password=password,
+            **data
+        )
+        return user
+
 
     def validate_password2(self, value):
         password = self.initial_data.get('password')
@@ -23,6 +44,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields = [
             'status',
             'username',
+            'first_name',
             'email',
             'password',
             'password2',
