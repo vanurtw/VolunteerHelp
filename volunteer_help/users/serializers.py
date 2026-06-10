@@ -6,7 +6,6 @@ from django.contrib.auth.password_validation import validate_password
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(validators=[validate_password])
     password2 = serializers.CharField()
-    username = serializers.CharField(required=False)
 
 
     def save(self, **kwargs):
