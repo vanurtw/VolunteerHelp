@@ -28,7 +28,19 @@ from .api_docs import (
     post_task_completed,
     post_task_confirm_completed
 )
+
+from emails.tasks import (
+    send_response_notification_task,
+    send_accept_notification_task,
+    send_completion_notification_task,
+)
+
 from .permissions import IsVolunteer, IsNeedy, IsOwner
+
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 
 class CategoriesAPIView(GenericAPIView):
@@ -190,22 +202,55 @@ class TaskRespondAPIView(APIView):
                 {'error': 'Вы уже откликнулись на эту заявку'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        response = ResponseTask.objects.create(
-            task=task,
-            volunteer=user,
-            status='pending'
-        )
-        # отправка уведомлений
-        # send_response_notification.delay(task.needy.email, task.title, user.username)
+        # response = ResponseTask.objects.create(
+        #     task=task,
+        #     volunteer=user,
+        #     status='pending'
+        # )
 
-        return Response(
-            {
-                'success': True,
-                'response_id': response.id,
-                'task_id': task.id
-            },
-            status=status.HTTP_201_CREATED
+        subject = f'Новый отклик на заявку "{task.title}"'
+
+        context = {
+            'needy_name': task.user.username,
+            'task_title': task.title,
+            'volunteer_name': user.username,
+            'volunteer_rating': user.rating,
+            'volunteer_email': user.email,
+            'site_url': 'http://127.0.0.1:8000',
+            'task_id': task.id,
+        }
+
+        html_content = render_to_string('email/response_notification.html', context)
+        text_content = strip_tags(html_content)
+
+        send_mail(
+            subject=subject,
+            message=text_content,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[task.user.email],
+            html_message=html_content,
+            fail_silently=False,
         )
+
+        # send_response_notification_task.delay(
+        #     needy_email=task.user.email,
+        #     needy_name=task.user.username,
+        #     task_title=task.title,
+        #     volunteer_name=request.user.username,
+        #     volunteer_rating=request.user.rating,
+        #     volunteer_email=request.user.email,
+        #     task_id=task.id,
+        # )
+
+        # return Response(
+        #     {
+        #         'success': True,
+        #         'response_id': response.id,
+        #         'task_id': task.id
+        #     },
+        #     status=status.HTTP_201_CREATED
+        # )
+        return Response({'a': 'a'})
 
     @delete_task_respond()
     def delete(self, request, pk):
@@ -281,6 +326,17 @@ class TaskAcceptAPIView(APIView):
         task.status = 'in_progress'
         task.volunteer = response_task.volunteer
         task.save()
+
+        send_accept_notification_task.delay(
+            volunteer_email=response_task.volunteer.email,
+            volunteer_name=response_task.volunteer.username,
+            task_title=task.title,
+            task_address=task.address,
+            needy_name=task.user.username,
+            needy_email=task.user.email,
+            task_id=task.id,
+        )
+
         return Response({'success': True, 'task_id': task.id}, status=status.HTTP_200_OK)
 
 
@@ -297,6 +353,15 @@ class TaskCompletedAPIView(APIView):
             return Response({"detail": "Задача не у тебя в обратботке"}, status=status.HTTP_400_BAD_REQUEST)
         task.status = 'pending_confirmation'
         task.save()
+
+        send_completion_notification_task.delay(
+            needy_email=task.user.email,
+            needy_name=task.user.username,
+            task_title=task.title,
+            volunteer_name=request.user.username,
+            task_id=task.id,
+        )
+
         return Response({"success": True}, status=status.HTTP_200_OK)
 
 

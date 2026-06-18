@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; }
+        .header { background: #2c7a4d; color: white; padding: 15px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { padding: 20px; }
+        .button { display: inline-block; background: #2c7a4d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
+        .footer { text-align: center; padding: 15px; font-size: 12px; color: #888; border-top: 1px solid #ddd; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>🤝 VolunteerHelp</h2>
+        </div>
+        <div class="content">
+            <h3>Ваш отклик принят! 🎉</h3>
+            <p>Здравствуйте, {{ volunteer_name }}!</p>
+            <p>Ваш отклик на заявку <strong>{{ task_title }}</strong> был принят.</p>
+            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <p><strong>📍 Адрес:</strong> {{ task_address }}</p>
+                <p><strong>👤 Нуждающийся:</strong> {{ needy_name }}</p>
+            </div>
+            <p>Свяжитесь с нуждающимся и уточните детали:</p>
+            <p style="text-align: center;">
+                <a href="{{ site_url }}/chat/{{ task_id }}/" class="button">Перейти в чат</a>
+            </p>
+        </div>
+        <div class="footer">
+            <p>VolunteerHelp — платформа для помощи и волонтёрства</p>
+            <p>Это автоматическое сообщение, не отвечайте на него.</p>
+        </div>
+    </div>
+</body>
+</html>

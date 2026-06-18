@@ -5,13 +5,7 @@ from django.conf.global_settings import MEDIA_URL
 from dotenv import load_dotenv
 import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-fallback-key-for-testing")
 
@@ -21,6 +15,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
+load_dotenv()
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -39,6 +34,7 @@ INSTALLED_APPS = [
     'reviews.apps.ReviewsConfig',
     'channels',
     'chat',
+    'emails',
 
 ]
 
@@ -72,7 +68,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-# Настройка ASGI
 ASGI_APPLICATION = 'core.asgi.application'
 
 # Настройка Redis для WebSocket
@@ -90,8 +85,34 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
     },
 }
+# EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+# EMAIL_PORT = 465
+# EMAIL_HOST = 'smtp.mail.ru'
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+#
+# SERVER_EMAIL = EMAIL_HOST_USER
+# EMAIL_ADMIN = EMAIL_HOST_USER
+#
+# EMAIL_USE_TLS = False
+# EMAIL_USE_SSL = False
 
-load_dotenv()
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 
 DATABASES = {
     'default': {

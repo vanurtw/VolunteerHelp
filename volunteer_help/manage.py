@@ -43,4 +43,10 @@ def main():
 if __name__ == '__main__':
     main()
 
- # daphne -b 127.0.0.1 -p 8000 core.asgi:application
+# sudo service redis-server start
+
+# celery -A core worker -l info --pool=solo
+
+# daphne -b 127.0.0.1 -p 8000 core.asgi:application
+
+# celery -A core flower --port=5555
