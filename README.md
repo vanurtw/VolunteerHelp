@@ -4,6 +4,8 @@
 - **Django** - основной бэкенд фреймворк
 - **PostgreSQL** - база данных
 - **Nginx** - обратный прокси и статика
+- **Celery** - выполнение фоновых задач
+- **Redis** - брокер сообщений
 - **Adminer** - веб-интерфейс управления БД
 - **Docker** - контейнеризация всех сервисов
 - **JWT** -  реализация токенов
@@ -19,21 +21,21 @@
 
 Добавте в него переменные среды:
 
-- *DB_NAME=DB_NAME*
-- *DB_USER=DB_USER*
-- *DB_PASSWORD=DB_PASSWROD*
-- *DB_HOST=dbps*
-- *DB_PORT=5432*
-- *SECRET_KEY=SEKRET_KEY*
-
 Пример .env
 
-- DB_USER=volunteeruser
-- DB_NAME=volunteerhelp
-- DB_PASSWORD=volunteeruser
-- DB_HOST=dbps
-- DB_PORT=5432
-- SECRET_KEY=django-insecure-)p92v2i8j$9^yqdi17jwsh!n3$5&=i^$(=5xqyehbntggzw57f
+DB_USER=volunteeruser
+DB_NAME=volunteerhelp
+DB_PASSWORD=volunteeruser
+#DB_HOST=dbps
+DB_PORT=5432
+SECRET_KEY=django-insecure-)p92v2i8j$9^yqdi17jwsh!n3$5&=i^$(=5xqyehbntggzw57f
+
+EMAIL_HOST_USER=адрес почтового сервиса
+EMAIL_HOST_PASSWORD=пароль приложения от почтового сервиса
+
+CELERY_BROKER_URL=redis://localhost:6379/
+CELERY_RESULT_BACKEND=redis://localhost:6379/
+CHANNEL_HOST=127.0.0.1
 
 
 ### 3. Запустите проект через Dcoker
@@ -56,9 +58,15 @@
 
 ### Доступ к сервисам
 
+ws://127.0.0.1:8000/ws/chat/2/?token=access
+
+подключение к сокету для чата
+
 |Сервис|URL|Описание|
 |------|---|--------|
 |🚀 API	|http://127.0.0.1:80|REST API
 👨‍💼 Adminer|http://127.0.0.1:8080/|Управление БД
 👑 Админка Django|http://127.0.0.1:80/admin/|Администрирование
 📚 API Документация|http://127.0.0.1:80/swagger/|Swagger/Redoc
+📚 API Документация|http://127.0.0.1:5555/flower/|мониторинг задач
+
