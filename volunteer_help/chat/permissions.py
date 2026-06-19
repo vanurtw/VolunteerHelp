@@ -1,13 +1,9 @@
-# chat/permissions.py
+
 from rest_framework import permissions
 
 
 class CanAccessChat(permissions.BasePermission):
-    """
-    Проверяет доступ к чату по задаче:
-    - Задача в статусе in_progress
-    - Пользователь — участник (нуждающийся или назначенный волонтёр)
-    """
+
     def has_permission(self, request, view):
         if not request.user.is_authenticated:
             return False
@@ -22,7 +18,7 @@ class CanAccessChat(permissions.BasePermission):
         except Task.DoesNotExist:
             return False
 
-        if task.status != 'in_progress':
+        if task.status not in ['in_progress', 'completed']:
             return False
 
-        return task.needy == request.user or task.volunteer == request.user
+        return task.volunteer == request.user or task.volunteer == request.user

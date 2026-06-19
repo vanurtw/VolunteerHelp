@@ -1,3 +1,7 @@
+
+#gevent==24.11.1
+#gunicorn==23.0.0
+
 services:
   postgres:
     image: postgres:17-alpine
@@ -11,6 +15,17 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     networks:
       - dbnet
+  redis:
+    image: redis:7-alpine
+    container_name: volunteer_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - dbnet
+
   adminer:
     image: adminer
     container_name: adminer
@@ -28,9 +43,13 @@ services:
     image: volunteer_help
     container_name: volunteer_help
     restart: always
-    command: "gunicorn -c gunicorn.py core.wsgi"
+    command: "daphne -b 0.0.0.0 -p 8000 core.asgi:application"
     env_file:
       - .env
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/
+      - CELERY_RESULT_BACKEND=redis://redis:6379/
+      - CHANNEL_HOST=redis://redis:6379/
     links:
       - "postgres:dbps"
     ports:
@@ -41,6 +60,36 @@ services:
       - ./volunteer_help:/app/www/volunteer_help
     depends_on:
       - postgres
+      - redis
+  celery:
+    image: volunteer_help:latest
+    container_name: volunteer_celery
+    command: celery -A core worker --loglevel=info --pool=solo
+    volumes:
+      - ./volunteer_help:/app/www/volunteer_help
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/
+      - CELERY_RESULT_BACKEND=redis://redis:6379/
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+    depends_on:
+      - redis
+    networks:
+      - dbnet
+
+  flower:
+    image: mher/flower:latest
+    container_name: volunteer_flower
+    restart: always
+    command: celery -b redis://redis:6379/ flower --port=5555 --basic_auth=admin:admin
+    ports:
+      - "5555:5555"
+    networks:
+      - dbnet
+    depends_on:
+      - redis
+      - celery
+
   nginx:
     image: nginx:latest
     container_name: nginx-server
@@ -63,3 +112,4 @@ networks:
     driver: bridge
 volumes:
   postgres-data:
+  redis_data:

@@ -12,10 +12,6 @@ from .permissions import CanAccessChat
 
 
 class MessageListView(ListAPIView):
-    """
-    GET /api/chat/tasks/{task_id}/messages/
-    Получить историю сообщений по задаче.
-    """
     serializer_class = MessageSerializer
     permission_classes = [IsAuthenticated, CanAccessChat]
 
@@ -25,11 +21,8 @@ class MessageListView(ListAPIView):
 
 
 class MessageCreateView(APIView):
-    """
-    POST /api/chat/tasks/{task_id}/messages/
-    Отправить сообщение через REST (резервный вариант).
-    """
     permission_classes = [IsAuthenticated, CanAccessChat]
+    serializer_class = MessageCreateSerializer
 
     def post(self, request, task_id):
         task = get_object_or_404(Task, id=task_id)
@@ -54,10 +47,6 @@ class MessageCreateView(APIView):
 
 
 class MessageMarkReadView(APIView):
-    """
-    POST /api/chat/tasks/{task_id}/messages/read/
-    Отметить все сообщения как прочитанные.
-    """
     permission_classes = [IsAuthenticated, CanAccessChat]
 
     def post(self, request, task_id):
@@ -74,10 +63,6 @@ class MessageMarkReadView(APIView):
 
 
 class ChatStatusView(APIView):
-    """
-    GET /api/chat/tasks/{task_id}/status/
-    Проверка доступности чата для пользователя.
-    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request, task_id):
@@ -85,21 +70,21 @@ class ChatStatusView(APIView):
 
         is_available = (
             task.status == 'in_progress' and
-            (task.needy == request.user or task.volunteer == request.user)
+            (task.user == request.user or task.volunteer == request.user)
         )
 
         response_data = {
             'is_available': is_available,
             'task_status': task.status,
             'task_id': task.id,
-            'is_participant': task.needy == request.user or task.volunteer == request.user,
+            'is_participant': task.user == request.user or task.volunteer == request.user,
         }
 
         if task.volunteer:
             response_data['other_user'] = {
-                'id': task.volunteer.id if task.needy == request.user else task.needy.id,
-                'username': task.volunteer.username if task.needy == request.user else task.needy.username,
-                'role': task.volunteer.role if task.needy == request.user else task.needy.role,
+                'id': task.volunteer.id if task.user == request.user else task.user.id,
+                'username': task.volunteer.username if task.user == request.user else task.user.username,
+                'role': task.volunteer.status if task.user == request.user else task.user.status,
             }
 
         return Response(response_data, status=200)

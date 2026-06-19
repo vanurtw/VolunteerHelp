@@ -28,7 +28,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'type': 'history',
                 'sender_id': message.sender.id,
                 'sender_name': message.sender.username,
-                'sender_role': message.sender.role,
+                'sender_role': message.sender.status,
                 'text': message.text,
                 'created_at': message.created_at.isoformat(),
                 'is_read': message.is_read,

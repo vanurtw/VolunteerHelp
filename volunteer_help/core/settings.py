@@ -14,7 +14,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Application definition
 load_dotenv()
 
 INSTALLED_APPS = [

@@ -202,55 +202,30 @@ class TaskRespondAPIView(APIView):
                 {'error': 'Вы уже откликнулись на эту заявку'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        # response = ResponseTask.objects.create(
-        #     task=task,
-        #     volunteer=user,
-        #     status='pending'
-        # )
-
-        subject = f'Новый отклик на заявку "{task.title}"'
-
-        context = {
-            'needy_name': task.user.username,
-            'task_title': task.title,
-            'volunteer_name': user.username,
-            'volunteer_rating': user.rating,
-            'volunteer_email': user.email,
-            'site_url': 'http://127.0.0.1:8000',
-            'task_id': task.id,
-        }
-
-        html_content = render_to_string('email/response_notification.html', context)
-        text_content = strip_tags(html_content)
-
-        send_mail(
-            subject=subject,
-            message=text_content,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[task.user.email],
-            html_message=html_content,
-            fail_silently=False,
+        response = ResponseTask.objects.create(
+            task=task,
+            volunteer=user,
+            status='pending'
         )
 
-        # send_response_notification_task.delay(
-        #     needy_email=task.user.email,
-        #     needy_name=task.user.username,
-        #     task_title=task.title,
-        #     volunteer_name=request.user.username,
-        #     volunteer_rating=request.user.rating,
-        #     volunteer_email=request.user.email,
-        #     task_id=task.id,
-        # )
+        send_response_notification_task.delay(
+            needy_email=task.user.email,
+            needy_name=task.user.username,
+            task_title=task.title,
+            volunteer_name=request.user.username,
+            volunteer_rating=request.user.rating,
+            volunteer_email=request.user.email,
+            task_id=task.id,
+        )
 
-        # return Response(
-        #     {
-        #         'success': True,
-        #         'response_id': response.id,
-        #         'task_id': task.id
-        #     },
-        #     status=status.HTTP_201_CREATED
-        # )
-        return Response({'a': 'a'})
+        return Response(
+            {
+                'success': True,
+                'response_id': response.id,
+                'task_id': task.id
+            },
+            status=status.HTTP_201_CREATED
+        )
 
     @delete_task_respond()
     def delete(self, request, pk):
