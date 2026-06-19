@@ -23,19 +23,19 @@
 
 Пример .env
 
-DB_USER=volunteeruser
-DB_NAME=volunteerhelp
-DB_PASSWORD=volunteeruser
-#DB_HOST=dbps
-DB_PORT=5432
-SECRET_KEY=django-insecure-)p92v2i8j$9^yqdi17jwsh!n3$5&=i^$(=5xqyehbntggzw57f
+- DB_USER=volunteeruser 
+- DB_NAME=volunteerhelp
+- DB_PASSWORD=volunteeruser
+- DB_HOST=dbps
+- DB_PORT=5432
+- SECRET_KEY=django-insecure-)p92v2i8j$9^yqdi17jwsh!n3$5&=i^$(=5xqyehbntggzw57f
 
-EMAIL_HOST_USER=адрес почтового сервиса
-EMAIL_HOST_PASSWORD=пароль приложения от почтового сервиса
+- EMAIL_HOST_USER=адрес почтового сервиса
+- EMAIL_HOST_PASSWORD=пароль приложения от почтового сервиса
 
-CELERY_BROKER_URL=redis://localhost:6379/
-CELERY_RESULT_BACKEND=redis://localhost:6379/
-CHANNEL_HOST=127.0.0.1
+- CELERY_BROKER_URL=redis://localhost:6379/
+- CELERY_RESULT_BACKEND=redis://localhost:6379/
+- CHANNEL_HOST=127.0.0.1
 
 
 ### 3. Запустите проект через Dcoker
